@@ -1,0 +1,120 @@
+SQL> connect
+Enter user-name: hr
+Connected.
+SQL> create table  tahmina(id number(7) primary key, first_name varchar(2), last_name varchar(2), round number(2), default 'IDB-IT-BISEW-SCHOLARSHIP);
+create table  tahmina(id number(7) primary key, first_name varchar(2), last_name varchar(2), round number(2), default 'IDB-IT-BISEW-SCHOLARSHIP)
+                                                                                                              *
+ERROR at line 1:
+ORA-00904: : invalid identifier 
+
+
+SQL> create table  tahmina(id number(7) primary key, first_name varchar(2), last_name varchar(2), round number(2), default 'IDB-IT-BISEW-SCHOLARSHIP');
+create table  tahmina(id number(7) primary key, first_name varchar(2), last_name varchar(2), round number(2), default 'IDB-IT-BISEW-SCHOLARSHIP')
+                                                                                                              *
+ERROR at line 1:
+ORA-00904: : invalid identifier 
+
+
+SQL> create table  tahmina(id number(7) primary key, first_name varchar(2), last_name varchar(2), round number(2), default 'IDB SCHOLARSHIP');
+create table  tahmina(id number(7) primary key, first_name varchar(2), last_name varchar(2), round number(2), default 'IDB SCHOLARSHIP')
+                                                                                                              *
+ERROR at line 1:
+ORA-00904: : invalid identifier 
+
+
+SQL> create table  tahmina(id number(7) primary key, first_name varchar2(10), last_name varchar2(10), round number(2),scholarhip varchar2(70) default 'IDB-IT-BISEW-SCHOLARSHIP);
+create table  tahmina(id number(7) primary key, first_name varchar2(10), last_name varchar2(10), round number(2),scholarhip varchar2(70) default 'IDB-IT-BISEW-SCHOLARSHIP)
+                                                                                                                                                 *
+ERROR at line 1:
+ORA-01756: quoted string not properly terminated 
+
+
+SQL>  create table  tahmina(id number(7) primary key, first_name varchar2(10), last_name varchar2(10), round number(2),scholarhip varchar2(70) default 'IDB-IT-BISEW-SCHOLARSHIP');
+
+Table created.
+
+SQL> isert tahmina(id, first_name, last_name, round) values(1, 'Tahmina', 'Begum', 39);
+SP2-0734: unknown command beginning "isert tahm..." - rest of line ignored.
+SQL>  insert into tahmina(id, first_name, last_name, round) values(1, 'Tahmina', 'Begum', 39);
+
+1 row created.
+
+SQL>  insert into tahmina(id, first_name, last_name, round) values(2, 'Sumiyaa', 'shyla', 39);
+
+1 row created.
+
+SQL>  insert into tahmina(id, first_name, last_name, round) values(3, 'Abdul', 'Motin', 39);
+
+1 row created.
+
+SQL>  insert into tahmina(id, first_name, last_name, round) values(4, 'Sahrier', 'shetu', 39);
+
+1 row created.
+
+SQL>  insert into tahmina(id, first_name, last_name, round) values(5, 'Mehedi', 'Hasan', 39);
+
+1 row created.
+
+SQL> DESC tahmina;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ ID                                        NOT NULL NUMBER(7)
+ FIRST_NAME                                         VARCHAR2(10)
+ LAST_NAME                                          VARCHAR2(10)
+ ROUND                                              NUMBER(2)
+ SCHOLARHIP                                         VARCHAR2(70)
+
+SQL> select * from tahmina;
+
+        ID FIRST_NAME LAST_NAME       ROUND                                     
+---------- ---------- ---------- ----------                                     
+SCHOLARHIP                                                                      
+----------------------------------------------------------------------          
+         1 Tahmina    Begum              39                                     
+IDB-IT-BISEW-SCHOLARSHIP                                                        
+                                                                                
+         2 Sumiyaa    shyla              39                                     
+IDB-IT-BISEW-SCHOLARSHIP                                                        
+                                                                                
+         3 Abdul      Motin              39                                     
+IDB-IT-BISEW-SCHOLARSHIP                                                        
+                                                                                
+
+        ID FIRST_NAME LAST_NAME       ROUND                                     
+---------- ---------- ---------- ----------                                     
+SCHOLARHIP                                                                      
+----------------------------------------------------------------------          
+         4 Sahrier    shetu              39                                     
+IDB-IT-BISEW-SCHOLARSHIP                                                        
+                                                                                
+         5 Mehedi     Hasan              39                                     
+IDB-IT-BISEW-SCHOLARSHIP                                                        
+                                                                                
+
+SQL> ALTER table data read only;
+ALTER table data read only
+*
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> alter tahmina read only;
+alter tahmina read only
+      *
+ERROR at line 1:
+ORA-00940: invalid ALTER command 
+
+
+SQL> alter table tahmina read only;
+
+Table altered.
+
+SQL> alter table tahmina read write;
+
+Table altered.
+
+SQL> commit;
+
+Commit complete.
+
+SQL> spool off;

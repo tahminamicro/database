@@ -1,0 +1,300 @@
+SQL> connect sys as sysdba
+Connected.
+SQL> create role superuser;
+
+Role created.
+
+SQL> grant create session, create table, create view, create sequence,create index;
+grant create session, create table, create view, create sequence,create index
+                                                                 *
+ERROR at line 1:
+ORA-00990: missing or invalid privilege 
+
+
+SQL> grant create session, create table, create view, create sequence,create index to superuser;
+grant create session, create table, create view, create sequence,create index to superuser
+                                                                 *
+ERROR at line 1:
+ORA-00990: missing or invalid privilege 
+
+
+SQL> grant create session, create table, create view, create sequence, create index to superuser;
+grant create session, create table, create view, create sequence, create index to superuser
+                                                                  *
+ERROR at line 1:
+ORA-00990: missing or invalid privilege 
+
+
+SQL> grant create session, create table, create view, create sequence, to superuser;
+grant create session, create table, create view, create sequence, to superuser
+                                                                  *
+ERROR at line 1:
+ORA-00990: missing or invalid privilege 
+
+
+SQL> grant create table, create view, create sequence to superuser;
+
+Grant succeeded.
+
+SQL> create role admin;
+create role admin
+            *
+ERROR at line 1:
+ORA-01921: role name 'ADMIN' conflicts with another user or role name 
+
+
+SQL> create role adminn;
+
+Role created.
+
+SQL> grant create session, create table to adminn;
+
+Grant succeeded.
+
+SQL> create role operator;
+
+Role created.
+
+SQL> grant create view  to operator;
+
+Grant succeeded.
+
+SQL> create user kaium identified by kaium;
+
+User created.
+
+SQL> create user mamun identified by mamun;
+
+User created.
+
+SQL> create user alamen identified by alamen;
+
+User created.
+
+SQL> create user shamim identified by shamim;
+
+User created.
+
+SQL> create user shishir identified by shishir;
+
+User created.
+
+SQL> grant superuser to kaium;
+
+Grant succeeded.
+
+SQL> grant unlimited tablespace to superuser;
+
+Grant succeeded.
+
+SQL> grant adminn to mamun;
+
+Grant succeeded.
+
+SQL> grant adminn to alamen;
+
+Grant succeeded.
+
+SQL> grant operator to shamim;
+
+Grant succeeded.
+
+SQL> grant operator to shishir;
+
+Grant succeeded.
+
+SQL> grant unlimited tablespace to adminn;
+
+Grant succeeded.
+
+SQL> grant unlimited tablespace to operator;
+
+Grant succeeded.
+
+SQL>  connect kaium
+ERROR:
+ORA-01045: user KAIUM lacks CREATE SESSION privilege; logon denied 
+
+
+Warning: You are no longer connected to ORACLE.
+SQL> connect sys as sysdba
+Connected.
+SQL> grant create session to superuser;
+
+Grant succeeded.
+
+SQL> grant create session to operator;
+
+Grant succeeded.
+
+SQL> connect kaium
+Connected.
+SQL> create table test(id number(2) primary key, name varchar2(50), email varchar2(50) not null, address varchar2(100), phone varchar2(17));
+create table test(id number(2) primary key, name varchar2(50), email varchar2(50) not null, address varchar2(100), phone varchar2(17))
+*
+ERROR at line 1:
+ORA-01950: no privileges on tablespace 'SYSTEM' 
+
+
+SQL> connect sys as sysdba;
+Connected.
+SQL> grant unlimited tablespace to kaium;
+
+Grant succeeded.
+
+SQL> connect kaium
+Connected.
+SQL> create table test(id number(2) primary key, name varchar2(50), email varchar2(50) not null, address varchar2(100), phone varchar2(17));
+
+Table created.
+
+SQL> insert into test(id, name, eamil, addres, phone) values(1, 'rahim', 'ab@gmail.com','110,london street','+8801729741217');
+insert into test(id, name, eamil, addres, phone) values(1, 'rahim', 'ab@gmail.com','110,london street','+8801729741217')
+                                  *
+ERROR at line 1:
+ORA-00904: "ADDRES": invalid identifier 
+
+
+SQL> insert into test(id, name, email, address, phone) values(1, 'rahim', 'ab@gmail.com','110,london street','+8801729741217');
+
+1 row created.
+
+SQL> create sequence test_seq increment by 5 start with 100 maxvalue 9999 nocache nocycle;
+
+Sequence created.
+
+SQL> insert into test(id, name, email, address, phone) values(test_seq.nextval, 'rahim', 'ab@gmail.com','110,london street','+8801729741217');
+insert into test(id, name, email, address, phone) values(test_seq.nextval, 'rahim', 'ab@gmail.com','110,london street','+8801729741217')
+                                                         *
+ERROR at line 1:
+ORA-01438: value larger than specified precision allowed for this column 
+
+
+SQL> create sequence test_t_seq increment by 5 start with 1 maxvalue 9999 nocache nocycle;
+
+Sequence created.
+
+SQL> insert into test(id, name, email, address, phone) values(test_t_seq.nextval, 'rahim', 'ab@gmail.com','110,london street','+8801729741217');
+insert into test(id, name, email, address, phone) values(test_t_seq.nextval, 'rahim', 'ab@gmail.com','110,london street','+8801729741217')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (KAIUM.SYS_C007052) violated 
+
+
+SQL> create sequence test.t_seq increment by 5 start with 1 maxvalue 9999 nocache nocycle;
+create sequence test.t_seq increment by 5 start with 1 maxvalue 9999 nocache nocycle
+*
+ERROR at line 1:
+ORA-01031: insufficient privileges 
+
+
+SQL> create table test_1(id number(2) primary key, name varchar2(50), email varchar2(50) not null, address varchar2(100), phone varchar2(17));
+
+Table created.
+
+SQL> insert into test_1(id, name, email, address, phone) values(test_seq.nextval, 'rahim', 'ab@gmail.com','110,london street','+8801729741217');
+insert into test_1(id, name, email, address, phone) values(test_seq.nextval, 'rahim', 'ab@gmail.com','110,london street','+8801729741217')
+                                                           *
+ERROR at line 1:
+ORA-01438: value larger than specified precision allowed for this column 
+
+
+SQL> insert into test_1(id, name, email, address, phone) values(test_t_seq.nextval, 'rahim', 'ab@gmail.com','110,london street','+8801729741217');
+
+1 row created.
+
+SQL> insert into test_1(id, name, email, address, phone) values(test_t_seq.nextval, 'fahim', 'rb@gmail.com','110,london street','+8801529741217');
+
+1 row created.
+
+SQL> select * from test_1;
+
+        ID NAME                                                                 
+---------- --------------------------------------------------                   
+EMAIL                                                                           
+--------------------------------------------------                              
+ADDRESS                                                                         
+--------------------------------------------------------------------------------
+PHONE                                                                           
+-----------------                                                               
+         6 rahim                                                                
+ab@gmail.com                                                                    
+110,london street                                                               
++8801729741217                                                                  
+                                                                                
+
+        ID NAME                                                                 
+---------- --------------------------------------------------                   
+EMAIL                                                                           
+--------------------------------------------------                              
+ADDRESS                                                                         
+--------------------------------------------------------------------------------
+PHONE                                                                           
+-----------------                                                               
+        11 fahim                                                                
+rb@gmail.com                                                                    
+110,london street                                                               
++8801529741217                                                                  
+                                                                                
+
+SQL> insert into test_1(id, name, email, address, phone) values(test_t_seq.nextval, 'momin', 'arb@gmail.com','110,london street','+8801529741217');
+
+1 row created.
+
+SQL> grant select on test_1 to shamim;
+
+Grant succeeded.
+
+SQL> grant select on test_1 to shishir;
+
+Grant succeeded.
+
+SQL> connect shishir
+Connected.
+SQL> view table test_1;
+SP2-0734: unknown command beginning "view table..." - rest of line ignored.
+SQL> select * from kaium.test_1;
+
+        ID NAME                                                                 
+---------- --------------------------------------------------                   
+EMAIL                                                                           
+--------------------------------------------------                              
+ADDRESS                                                                         
+--------------------------------------------------------------------------------
+PHONE                                                                           
+-----------------                                                               
+         6 rahim                                                                
+ab@gmail.com                                                                    
+110,london street                                                               
++8801729741217                                                                  
+                                                                                
+
+        ID NAME                                                                 
+---------- --------------------------------------------------                   
+EMAIL                                                                           
+--------------------------------------------------                              
+ADDRESS                                                                         
+--------------------------------------------------------------------------------
+PHONE                                                                           
+-----------------                                                               
+        11 fahim                                                                
+rb@gmail.com                                                                    
+110,london street                                                               
++8801529741217                                                                  
+                                                                                
+
+        ID NAME                                                                 
+---------- --------------------------------------------------                   
+EMAIL                                                                           
+--------------------------------------------------                              
+ADDRESS                                                                         
+--------------------------------------------------------------------------------
+PHONE                                                                           
+-----------------                                                               
+        16 momin                                                                
+arb@gmail.com                                                                   
+110,london street                                                               
++8801529741217                                                                  
+                                                                                
+
+SQL> spool off;

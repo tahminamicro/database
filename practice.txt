@@ -1,0 +1,112 @@
+SQL> create table tri(id number(2) primary key, job_title varchar2(50), salary number(9, 2));
+
+Table created.
+
+SQL> create table tri_backup as select * from tri;
+
+Table created.
+
+SQL> CREATE or REPLACE TRIGGER tri_after_insert AFTER INSERT ON tri
+  2  FOR EACH ROW
+  3  DECLARE
+  4  BEGIN
+  5  insert into tri_backup values(:new.id, :new.job_title, :new.salary);
+  6  DBMS_OUTPUT.PUT_LINE('data inserted successfully');
+  7  END;
+  8  /
+
+Trigger created.
+
+SQL> insert into tri(id, job_title, salary) values(1, 'SA_REP', 25000);
+
+1 row created.
+
+SQL> select * from tri_backup;
+
+        ID JOB_TITLE                                              SALARY        
+---------- -------------------------------------------------- ----------        
+         1 SA_REP                                                  25000        
+
+SQL> CREATE OR REPLACE TRIGGER tri_after_update AFTER UPDATE ON tri
+  2  FOR EACH ROW
+  3  DECLARE
+  4  BEGIN
+  5  update tri_backup
+  6  set id= :new.id, job_title=:new.job_title, salary = :new.salary
+  7  where id=:old.id;
+  8  DBMS_OUTPUT.PUT_LINE('updated to backup');
+  9  END;
+ 10  /
+
+Trigger created.
+
+SQL> update tri set id=101 where id=1;
+update tri set id=101 where id=1
+                  *
+ERROR at line 1:
+ORA-01438: value larger than specified precision allowed for this column 
+
+
+SQL> update tri set id=11 where id=1;
+
+1 row updated.
+
+SQL> CREATE OR REPLACE TRIGGER tri_after_update AFTER UPDATE ON tri
+  2  FOR EACH ROW
+  3  DECLARE
+  4  BEGIN
+  5  update tri_backup
+  6  set id= :new.id, job_title=:new.job_title, salary = :new.salary
+  7  where id=:old.id; or job_title=:old.job_title or salary=:old.salary;
+  8  DBMS_OUTPUT.PUT_LINE('updated to backup');
+  9  END;
+ 10  /
+
+Warning: Trigger created with compilation errors.
+
+SQL> CREATE OR REPLACE TRIGGER tri_after_update AFTER UPDATE ON tri
+  2  FOR EACH ROW
+  3  DECLARE
+  4  BEGIN
+  5  update tri_backup
+  6  set id= :new.id, job_title=:new.job_title, salary = :new.salary
+  7  where id=:old.id;
+  8  DBMS_OUTPUT.PUT_LINE('updated to backup');
+  9  END;
+ 10  /
+
+Trigger created.
+
+SQL> update tri set job_title='IT_PROG', salary= 10000000 where id=1;
+
+0 rows updated.
+
+SQL> update tri set id=101, job_title='IT_PROG', salary= 10000000 where id=1;
+
+0 rows updated.
+
+SQL> select * from tri;
+
+        ID JOB_TITLE                                              SALARY        
+---------- -------------------------------------------------- ----------        
+        11 SA_REP                                                  25000        
+
+SQL> update tri set id=101, job_title='IT_PROG', salary= 10000000 where id=11;
+update tri set id=101, job_title='IT_PROG', salary= 10000000 where id=11
+                  *
+ERROR at line 1:
+ORA-01438: value larger than specified precision allowed for this column 
+
+
+SQL> update tri set id=1, job_title='IT_PROG', salary= 10000000 where id=11;
+update tri set id=1, job_title='IT_PROG', salary= 10000000 where id=11
+                                                  *
+ERROR at line 1:
+ORA-01438: value larger than specified precision allowed for this column 
+
+
+SQL> update tri set id=21, job_title='IT_PROG', salary= 1000000 where id=11;
+
+1 row updated.
+
+SQL> spool off

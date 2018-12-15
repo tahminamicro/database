@@ -1,0 +1,46 @@
+
+SQL*Plus: Release 11.2.0.2.0 Production on Tue Dec 11 15:40:02 2018
+
+Copyright (c) 1982, 2014, Oracle.  All rights reserved.
+
+SQL> spool D:\trigger.txt
+SQL> connect sys as sysdba
+Enter password:
+Connected.
+SQL> connect hr
+Enter password:
+Connected.
+SQL> create table sydney(usaid number(5), fname varchar2(50), lname varchar2(50));
+
+Table created.
+
+SQL> create table sydney_backup as select * from sydney;
+
+Table created.
+
+SQL> CREATE or REPLACE TRIGGER sydney_after_insert AFTER INSERT ON sydney
+  2  FOR EACH ROW
+  3  DECLARE
+  4  BEGIN
+  5  insert into sydney_backup values(:new.usaid, :new.fname, :new.lname);
+  6  DBMS_OUTPUT.PUT_LINE('data inserted successfully on sydney_backup table');
+  7  END;
+  8  /
+
+Trigger created.
+
+SQL> insert into sydney(usaid, fname, lname) values(1, 'Mr.', 'MAmun');
+
+1 row created.
+
+SQL> select * from sydney_backup;
+
+     USAID FNAME
+---------- --------------------------------------------------
+LNAME
+--------------------------------------------------
+         1 Mr.
+MAmun
+
+
+SQL>

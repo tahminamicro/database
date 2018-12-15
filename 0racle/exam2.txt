@@ -1,0 +1,495 @@
+SQL> connect sys as sysdba
+Connected.
+SQL> create role manager;
+
+Role created.
+
+SQL> create role supervisor;
+
+Role created.
+
+SQL> create role Marketting Officers;
+create role Marketting Officers
+                       *
+ERROR at line 1:
+ORA-00922: missing or invalid option 
+
+
+SQL> create role Marketting_Officers;
+
+Role created.
+
+SQL> grant create session, create table, create view, create sequence to manager;
+
+Grant succeeded.
+
+SQL> grant create session, create table, create view, create sequence to supervisor;
+
+Grant succeeded.
+
+SQL> grant view to Marketting_Officers;
+grant view to Marketting_Officers
+      *
+ERROR at line 1:
+ORA-01919: role 'VIEW' does not exist 
+
+
+SQL> grant select on employee Marketting_Officers;
+grant select on employee Marketting_Officers
+                         *
+ERROR at line 1:
+ORA-00905: missing keyword 
+
+
+SQL> create user winter identified by winter;
+
+User created.
+
+SQL> grant manager to winter;
+
+Grant succeeded.
+
+SQL> connect winter
+Connected.
+SQL> connect wina;
+Connected.
+SQL> create table department(id number(5) primary key, dep_name unique);
+create table department(id number(5) primary key, dep_name unique)
+                                                  *
+ERROR at line 1:
+ORA-02263: need to specify the datatype for this column 
+
+
+SQL> create table department(id number(5) primary key, dep_name varchar2(50) unique);
+
+Table created.
+
+SQL> create sequence dep_seq increment by 10 start with 10 no cycle no cache;
+create sequence dep_seq increment by 10 start with 10 no cycle no cache
+                                                      *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended 
+
+
+SQL> create sequence dep_seq increment by 10 start with 10 maxvalue 9999 no cache nocycle;
+create sequence dep_seq increment by 10 start with 10 maxvalue 9999 no cache nocycle
+                                                                    *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended 
+
+
+SQL> create sequence dep_seq increment by 10 start with 10 maxvalue 9999 nocache nocycle;
+
+Sequence created.
+
+SQL> insert into department(id, dep_name) values(dep_seq.nextval, Admin);
+insert into department(id, dep_name) values(dep_seq.nextval, Admin)
+                                                             *
+ERROR at line 1:
+ORA-00984: column not allowed here 
+
+
+SQL> insert into department(id, dep_name) values(dep_seq.nextval, 'Admin');
+
+1 row created.
+
+SQL> insert into department(id, dep_name) values(dep_seq.nextval, 'IT_PROG');
+
+1 row created.
+
+SQL> insert into department(id, dep_name) values(dep_seq.nextval, 'SAL_REP');
+
+1 row created.
+
+SQL> select * from department;
+
+        ID DEP_NAME                                                             
+---------- --------------------------------------------------                   
+        10 Admin                                                                
+        20 IT_PROG                                                              
+        30 SAL_REP                                                              
+
+SQL> create table contact(id number(5) primary key, mobile varchar2(50) unique, country varchar2(50) default 'Bangladesh');
+
+Table created.
+
+SQL> create sequence con_seq increment by 5 start with 5 maxvalue 9999 nocache nocycle;
+
+Sequence created.
+
+SQL> insert into contact(id, mobile) values(con_seq.nextval, '+8801729741217');
+
+1 row created.
+
+SQL> insert into contact(id, mobile) values(con_seq.nextval, '+8801729741257');
+
+1 row created.
+
+SQL> insert into contact(id, mobile) values(con_seq.nextval, '+8801729741258');
+
+1 row created.
+
+SQL> insert into contact(id, mobile) values(con_seq.nextval, '+8801729741298');
+
+1 row created.
+
+SQL> insert into contact(id, mobile) values(con_seq.nextval, '+8801729741290');
+
+1 row created.
+
+SQL> insert into contact(id, mobile) values(con_seq.nextval, '+8801729741291');
+
+1 row created.
+
+SQL> insert into contact(id, mobile) values(con_seq.nextval, '+8801729741292');
+
+1 row created.
+
+SQL> insert into contact(id, mobile) values(con_seq.nextval, '+8801729741232');
+
+1 row created.
+
+SQL> insert into contact(id, mobile) values(con_seq.nextval, '+88017297412332');
+
+1 row created.
+
+SQL> insert into contact(id, mobile) values(con_seq.nextval, '+88017297412335');
+
+1 row created.
+
+SQL> insert into contact(id, mobile) values(con_seq.nextval, '+88017297412338');
+
+1 row created.
+
+SQL> insert into contact(id, mobile) values(con_seq.nextval, '+88017297412378');
+
+1 row created.
+
+SQL> insert into contact(id, mobile) values(con_seq.nextval, '+88017297412375');
+
+1 row created.
+
+SQL> insert into contact(id, mobile) values(con_seq.nextval, '+88017297412377');
+
+1 row created.
+
+SQL> insert into contact(id, mobile) values(con_seq.nextval, '+88017297412347');
+
+1 row created.
+
+SQL> select * from contact;
+
+        ID MOBILE                                                               
+---------- --------------------------------------------------                   
+COUNTRY                                                                         
+--------------------------------------------------                              
+         5 +8801729741217                                                       
+Bangladesh                                                                      
+                                                                                
+        10 +8801729741257                                                       
+Bangladesh                                                                      
+                                                                                
+        15 +8801729741258                                                       
+Bangladesh                                                                      
+                                                                                
+
+        ID MOBILE                                                               
+---------- --------------------------------------------------                   
+COUNTRY                                                                         
+--------------------------------------------------                              
+        20 +8801729741298                                                       
+Bangladesh                                                                      
+                                                                                
+        25 +8801729741290                                                       
+Bangladesh                                                                      
+                                                                                
+        30 +8801729741291                                                       
+Bangladesh                                                                      
+                                                                                
+
+        ID MOBILE                                                               
+---------- --------------------------------------------------                   
+COUNTRY                                                                         
+--------------------------------------------------                              
+        35 +8801729741292                                                       
+Bangladesh                                                                      
+                                                                                
+        40 +8801729741232                                                       
+Bangladesh                                                                      
+                                                                                
+        45 +88017297412332                                                      
+Bangladesh                                                                      
+                                                                                
+
+        ID MOBILE                                                               
+---------- --------------------------------------------------                   
+COUNTRY                                                                         
+--------------------------------------------------                              
+        50 +88017297412335                                                      
+Bangladesh                                                                      
+                                                                                
+        55 +88017297412338                                                      
+Bangladesh                                                                      
+                                                                                
+        60 +88017297412378                                                      
+Bangladesh                                                                      
+                                                                                
+
+        ID MOBILE                                                               
+---------- --------------------------------------------------                   
+COUNTRY                                                                         
+--------------------------------------------------                              
+        65 +88017297412375                                                      
+Bangladesh                                                                      
+                                                                                
+        70 +88017297412377                                                      
+Bangladesh                                                                      
+                                                                                
+        75 +88017297412347                                                      
+Bangladesh                                                                      
+                                                                                
+
+15 rows selected.
+
+SQL> create table employee(id number(5) primary key, emp_name, salary number(8, 2) check(salary>=25000), joining_date date check(joining_date < '01-jan-2000'),department_id foreign key(id) references department, contact_id foreign key(id) references contact);
+create table employee(id number(5) primary key, emp_name, salary number(8, 2) check(salary>=25000), joining_date date check(joining_date < '01-jan-2000'),department_id foreign key(id) references department, contact_id foreign key(id) references contact)
+                                                                                                                                                                                *
+ERROR at line 1:
+ORA-00907: missing right parenthesis 
+
+
+SQL> create table employee(id number(5) primary key, emp_name varchar2(50), salary number(8, 2) check(salary>=25000), joining_date date check(joining_date < '01-jan-2000'),department_id foreign key(id) references department, contact_id foreign key(id) references contact);
+create table employee(id number(5) primary key, emp_name varchar2(50), salary number(8, 2) check(salary>=25000), joining_date date check(joining_date < '01-jan-2000'),department_id foreign key(id) references department, contact_id foreign key(id) references contact)
+                                                                                                                                                                                             *
+ERROR at line 1:
+ORA-00907: missing right parenthesis 
+
+
+SQL> create table employee(id number(5) primary key, emp_name varchar2(50), salary number(8, 2) check(salary>=25000), joining_date date check(joining_date < '01-jan-2000'),foreign key(id) references department, foreign key(id) references contact);
+
+Table created.
+
+SQL> desc employee;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ ID                                        NOT NULL NUMBER(5)
+ EMP_NAME                                           VARCHAR2(50)
+ SALARY                                             NUMBER(8,2)
+ JOINING_DATE                                       DATE
+
+SQL> create sequence emp_seq increment by 1 start with 1 maxvalue nacache nocycle;
+create sequence emp_seq increment by 1 start with 1 maxvalue nacache nocycle
+                                                             *
+ERROR at line 1:
+ORA-01722: invalid number 
+
+
+SQL> create sequence emp_seq increment by 1 start with 1 maxvalue 9999  nocache nocycle;
+
+Sequence created.
+
+SQL> drop table employee;
+
+Table dropped.
+
+SQL> drop sequence emp_seq;
+
+Sequence dropped.
+
+SQL> create table employee(id number(5) primary key, emp_name varchar2(50), salary number(8, 2) check(salary>=25000), joining_date date check(joining_date < '01-jan-2000'), department_id number(5) not null, contact_id number(5) unique, foreign key(department_id) references department(id), foreign key(contact_id) references contact(id));
+
+Table created.
+
+SQL> create sequence emp_seq increment by 1 start with 1 maxvalue 9999 nocache nocycle;
+
+Sequence created.
+
+SQL> insert into employee(id, emp_name, salary, joining_date) values(emp_seq.nextval, 'Rahim', 300000,'01-feb-1999');
+insert into employee(id, emp_name, salary, joining_date) values(emp_seq.nextval, 'Rahim', 300000,'01-feb-1999')
+*
+ERROR at line 1:
+ORA-01400: cannot insert NULL into ("WINA"."EMPLOYEE"."DEPARTMENT_ID") 
+
+
+SQL> insert into employee(id, emp_name, salary, joining_date, department_id, contact_id) values(emp_seq.nextval, 'Rahim', 300000,'01-feb-1999',10,5);
+
+1 row created.
+
+SQL> insert into employee(id, emp_name, salary, joining_date, department_id, contact_id) values(emp_seq.nextval, 'Rahim', 300000,'01-feb-1999',20,15);
+
+1 row created.
+
+SQL> insert into employee(id, emp_name, salary, joining_date, department_id, contact_id) values(emp_seq.nextval, 'Rahim', 300000,'01-feb-1999',30,10);
+
+1 row created.
+
+SQL> insert into employee(id, emp_name, salary, joining_date, department_id, contact_id) values(emp_seq.nextval, 'Rahim', 300000,'01-feb-1999',30,10);
+insert into employee(id, emp_name, salary, joining_date, department_id, contact_id) values(emp_seq.nextval, 'Rahim', 300000,'01-feb-1999',30,10)
+*
+ERROR at line 1:
+ORA-00001: unique constraint (WINA.SYS_C007074) violated 
+
+
+SQL> insert into employee(id, emp_name, salary, joining_date, department_id, contact_id) values(emp_seq.nextval, 'Rahim', 300000,'01-feb-1999',10,20);
+
+1 row created.
+
+SQL> insert into employee(id, emp_name, salary, joining_date, department_id, contact_id) values(emp_seq.nextval, 'Rahim', 300000,'01-feb-1999',10,25);
+
+1 row created.
+
+SQL> insert into employee(id, emp_name, salary, joining_date, department_id, contact_id) values(emp_seq.nextval, 'Rahim', 300000,'01-feb-1999',10,30);
+
+1 row created.
+
+SQL> insert into employee(id, emp_name, salary, joining_date, department_id, contact_id) values(emp_seq.nextval, 'Rahim', 300000,'01-feb-1999',10,35);
+
+1 row created.
+
+SQL> insert into employee(id, emp_name, salary, joining_date, department_id, contact_id) values(emp_seq.nextval, 'Rahim', 300000,'01-feb-1999',10,40);
+
+1 row created.
+
+SQL> insert into employee(id, emp_name, salary, joining_date, department_id, contact_id) values(emp_seq.nextval, 'A', 300000,'01-feb-1999',10,50);
+
+1 row created.
+
+SQL> insert into employee(id, emp_name, salary, joining_date, department_id, contact_id) values(emp_seq.nextval, 'b', 300000,'01-feb-1999',10,45);
+
+1 row created.
+
+SQL> insert into employee(id, emp_name, salary, joining_date, department_id, contact_id) values(emp_seq.nextval, 'c', 300000,'01-feb-1999',10,55);
+
+1 row created.
+
+SQL> delete from employees where emp_name='%Rahim%';
+delete from employees where emp_name='%Rahim%'
+            *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> delete from employee where emp_name='%Rahim%';
+
+0 rows deleted.
+
+SQL> insert into employee(id, emp_name, salary, joining_date, department_id, contact_id) values(emp_seq.nextval, '', 300000,'01-feb-1999',20,5);
+insert into employee(id, emp_name, salary, joining_date, department_id, contact_id) values(emp_seq.nextval, '', 300000,'01-feb-1999',20,5)
+*
+ERROR at line 1:
+ORA-00001: unique constraint (WINA.SYS_C007074) violated 
+
+
+SQL> desc employee;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ ID                                        NOT NULL NUMBER(5)
+ EMP_NAME                                           VARCHAR2(50)
+ SALARY                                             NUMBER(8,2)
+ JOINING_DATE                                       DATE
+ DEPARTMENT_ID                             NOT NULL NUMBER(5)
+ CONTACT_ID                                         NUMBER(5)
+
+SQL> select * from employee;
+
+        ID EMP_NAME                                               SALARY        
+---------- -------------------------------------------------- ----------        
+JOINING_D DEPARTMENT_ID CONTACT_ID                                              
+--------- ------------- ----------                                              
+         2 Rahim                                                  300000        
+01-FEB-99            10          5                                              
+                                                                                
+         3 Rahim                                                  300000        
+01-FEB-99            20         15                                              
+                                                                                
+         4 Rahim                                                  300000        
+01-FEB-99            30         10                                              
+                                                                                
+
+        ID EMP_NAME                                               SALARY        
+---------- -------------------------------------------------- ----------        
+JOINING_D DEPARTMENT_ID CONTACT_ID                                              
+--------- ------------- ----------                                              
+         6 Rahim                                                  300000        
+01-FEB-99            10         20                                              
+                                                                                
+         7 Rahim                                                  300000        
+01-FEB-99            10         25                                              
+                                                                                
+         8 Rahim                                                  300000        
+01-FEB-99            10         30                                              
+                                                                                
+
+        ID EMP_NAME                                               SALARY        
+---------- -------------------------------------------------- ----------        
+JOINING_D DEPARTMENT_ID CONTACT_ID                                              
+--------- ------------- ----------                                              
+         9 Rahim                                                  300000        
+01-FEB-99            10         35                                              
+                                                                                
+        10 Rahim                                                  300000        
+01-FEB-99            10         40                                              
+                                                                                
+        11 A                                                      300000        
+01-FEB-99            10         50                                              
+                                                                                
+
+        ID EMP_NAME                                               SALARY        
+---------- -------------------------------------------------- ----------        
+JOINING_D DEPARTMENT_ID CONTACT_ID                                              
+--------- ------------- ----------                                              
+        12 b                                                      300000        
+01-FEB-99            10         45                                              
+                                                                                
+        13 c                                                      300000        
+01-FEB-99            10         55                                              
+                                                                                
+
+11 rows selected.
+
+SQL> create synonym d for department;
+create synonym d for department
+*
+ERROR at line 1:
+ORA-01031: insufficient privileges 
+
+
+SQL> create synonym d for department;
+
+Synonym created.
+
+SQL> create synonym c for contact;
+
+Synonym created.
+
+SQL> create view emp_view as select e.id,e.emp_name "Emp Name", e.salary "Annual Salary", d.dep_name, c.mobile, c.country from employee e, department d, contact c where e.department_id=d.id and e.department_id=c.id;
+
+View created.
+
+SQL> grant select on employee to Marketting_officers;
+
+Grant succeeded.
+
+SQL> connect rina
+ERROR:
+ORA-01045: user RINA lacks CREATE SESSION privilege; logon denied 
+
+
+Warning: You are no longer connected to ORACLE.
+SQL> connect rina
+Connected.
+SQL> select * from employee;
+select * from employee
+              *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> select * from employee;
+select * from employee
+              *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> spool off

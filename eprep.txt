@@ -1,0 +1,489 @@
+SQL> connecr hr
+SP2-0042: unknown command "connecr hr" - rest of line ignored.
+SQL> connect hr
+Connected.
+SQL> create table emp(eid number(5), ename varchar2(50), salary number(9), hire_date date, address varchar2(50));
+
+Table created.
+
+SQL> alter table emp add constraint emp_eid_pk primary key(eid);
+
+Table altered.
+
+SQL> insert into emp(eid, ename, salary, hire_date, address) values(&eid, '&ename', &salary, '&hire_date', '&address');
+Enter value for eid: 101
+Enter value for ename: Alamen
+Enter value for salary: 6500000
+Enter value for hire_date: 01-jan-2011
+Enter value for address: 110,college road
+old   1: insert into emp(eid, ename, salary, hire_date, address) values(&eid, '&ename', &salary, '&hire_date', '&address')
+new   1: insert into emp(eid, ename, salary, hire_date, address) values(101, 'Alamen', 6500000, '01-jan-2011', '110,college road')
+
+1 row created.
+
+SQL> alter table emp add(phone varchar2(50), job_title varchar2(50));
+
+Table altered.
+
+SQL> select ename, job_title, salary, salary+(salary*.03) as "Total Salary";
+select ename, job_title, salary, salary+(salary*.03) as "Total Salary"
+                                                                     *
+ERROR at line 1:
+ORA-00923: FROM keyword not found where expected 
+
+
+SQL> select ename, job_title, salary, salary+(salary*.03) as "Total Salary" from emp;
+
+ENAME                                                                           
+--------------------------------------------------                              
+JOB_TITLE                                              SALARY Total Salary      
+-------------------------------------------------- ---------- ------------      
+Alamen                                                                          
+                                                      6500000      6695000      
+                                                                                
+
+SQL> insert into emp(eid, ename, job_title, phone, address) values(102, 'A', 'SA-REP', '+8801729741217', '120, polasy lane');
+
+1 row created.
+
+SQL> insert into emp(eid, ename, job_title, phone, address) values(103, 'A', 'SA-MAN', '+8801729741237', '120, polasy lane');
+
+1 row created.
+
+SQL> insert into emp(eid, ename, job_title, phone, address) values(104, 'B', 'IT_PROG', '+8801729741937', '120, polasy lane');
+
+1 row created.
+
+SQL> insert into emp(eid, ename, job_title, salary, phone, address) values(104, 'B', 'IT_PROG', 500000, '+8801729741937', '120, polasy lane');
+insert into emp(eid, ename, job_title, salary, phone, address) values(104, 'B', 'IT_PROG', 500000, '+8801729741937', '120, polasy lane')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (HR.EMP_EID_PK) violated 
+
+
+SQL> insert into emp(eid, ename, job_title, salary, phone, address) values(105, 'c', 'IT_PROG', 500000, '+8801729741937', '120, polasy lane');
+
+1 row created.
+
+SQL> insert into emp(eid, ename, job_title, salary, phone, address) values(106, 'c', 'IT_PROG', 450000, '+8801729741937', '120, polasy lane');
+
+1 row created.
+
+SQL> insert into emp(eid, ename, job_title, salary, phone, address) values(107, 'c', 'IT_PROG', 350000, '+8801729741937', '120, polasy lane');
+
+1 row created.
+
+SQL> insert into emp(eid, ename, job_title, salary, phone, address) values(108, 'c', 'IT_PROG', 650000, '+8801729741937', '120, polasy lane');
+
+1 row created.
+
+SQL> select ename, salary from emp where=(select min(salary) from emp);
+select ename, salary from emp where=(select min(salary) from emp)
+                                   *
+ERROR at line 1:
+ORA-00936: missing expression 
+
+
+SQL> select ename, salary from emp where=(select MIN(salary) from emp);
+select ename, salary from emp where=(select MIN(salary) from emp)
+                                   *
+ERROR at line 1:
+ORA-00936: missing expression 
+
+
+SQL> select ename, salary from emp where salary=(select MIN(salary) from emp);
+
+ENAME                                                  SALARY                   
+-------------------------------------------------- ----------                   
+c                                                      350000                   
+
+SQL> update emp set job_title='manager';
+
+8 rows updated.
+
+SQL> create view v_emp as select eid, ename, salary, job_title,phone, address frpm emp;
+create view v_emp as select eid, ename, salary, job_title,phone, address frpm emp
+                                                                              *
+ERROR at line 1:
+ORA-00923: FROM keyword not found where expected 
+
+
+SQL> create view v_emp as select eid, ename, salary, job_title,phone, address from emp;
+
+View created.
+
+SQL> create sequence emp_seq increment by 1 start with 101 nocache nocycle;
+
+Sequence created.
+
+SQL> create index emp_id_idx On emp(eid);
+create index emp_id_idx On emp(eid)
+                               *
+ERROR at line 1:
+ORA-01408: such column list already indexed 
+
+
+SQL> create table emp_backup as select * from emp;
+
+Table created.
+
+SQL> CREATE OR REPLACE TRIGGER emp_after_insert AFTER insert ON emp
+  2  FOR EACH ROW
+  3  DECLARE
+  4  BEGIN
+  5  insert into emp_backup values(:new.eid, :new.ename, :new.salary, :new.job_title);
+  6  DBMS_OUTPUT.PUT_LINE('Data inserted successfully');
+  7  END;
+  8  /
+
+Warning: Trigger created with compilation errors.
+
+SQL> select * from emp;
+
+       EID ENAME                                                  SALARY        
+---------- -------------------------------------------------- ----------        
+HIRE_DATE ADDRESS                                                               
+--------- --------------------------------------------------                    
+PHONE                                                                           
+--------------------------------------------------                              
+JOB_TITLE                                                                       
+--------------------------------------------------                              
+       101 Alamen                                                6500000        
+01-JAN-11 110,college road                                                      
+                                                                                
+manager                                                                         
+                                                                                
+
+       EID ENAME                                                  SALARY        
+---------- -------------------------------------------------- ----------        
+HIRE_DATE ADDRESS                                                               
+--------- --------------------------------------------------                    
+PHONE                                                                           
+--------------------------------------------------                              
+JOB_TITLE                                                                       
+--------------------------------------------------                              
+       102 A                                                                    
+          120, polasy lane                                                      
++8801729741217                                                                  
+manager                                                                         
+                                                                                
+
+       EID ENAME                                                  SALARY        
+---------- -------------------------------------------------- ----------        
+HIRE_DATE ADDRESS                                                               
+--------- --------------------------------------------------                    
+PHONE                                                                           
+--------------------------------------------------                              
+JOB_TITLE                                                                       
+--------------------------------------------------                              
+       103 A                                                                    
+          120, polasy lane                                                      
++8801729741237                                                                  
+manager                                                                         
+                                                                                
+
+       EID ENAME                                                  SALARY        
+---------- -------------------------------------------------- ----------        
+HIRE_DATE ADDRESS                                                               
+--------- --------------------------------------------------                    
+PHONE                                                                           
+--------------------------------------------------                              
+JOB_TITLE                                                                       
+--------------------------------------------------                              
+       104 B                                                                    
+          120, polasy lane                                                      
++8801729741937                                                                  
+manager                                                                         
+                                                                                
+
+       EID ENAME                                                  SALARY        
+---------- -------------------------------------------------- ----------        
+HIRE_DATE ADDRESS                                                               
+--------- --------------------------------------------------                    
+PHONE                                                                           
+--------------------------------------------------                              
+JOB_TITLE                                                                       
+--------------------------------------------------                              
+       105 c                                                      500000        
+          120, polasy lane                                                      
++8801729741937                                                                  
+manager                                                                         
+                                                                                
+
+       EID ENAME                                                  SALARY        
+---------- -------------------------------------------------- ----------        
+HIRE_DATE ADDRESS                                                               
+--------- --------------------------------------------------                    
+PHONE                                                                           
+--------------------------------------------------                              
+JOB_TITLE                                                                       
+--------------------------------------------------                              
+       106 c                                                      450000        
+          120, polasy lane                                                      
++8801729741937                                                                  
+manager                                                                         
+                                                                                
+
+       EID ENAME                                                  SALARY        
+---------- -------------------------------------------------- ----------        
+HIRE_DATE ADDRESS                                                               
+--------- --------------------------------------------------                    
+PHONE                                                                           
+--------------------------------------------------                              
+JOB_TITLE                                                                       
+--------------------------------------------------                              
+       107 c                                                      350000        
+          120, polasy lane                                                      
++8801729741937                                                                  
+manager                                                                         
+                                                                                
+
+       EID ENAME                                                  SALARY        
+---------- -------------------------------------------------- ----------        
+HIRE_DATE ADDRESS                                                               
+--------- --------------------------------------------------                    
+PHONE                                                                           
+--------------------------------------------------                              
+JOB_TITLE                                                                       
+--------------------------------------------------                              
+       108 c                                                      650000        
+          120, polasy lane                                                      
++8801729741937                                                                  
+manager                                                                         
+                                                                                
+
+8 rows selected.
+
+SQL> DESC emp;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ EID                                       NOT NULL NUMBER(5)
+ ENAME                                              VARCHAR2(50)
+ SALARY                                             NUMBER(9)
+ HIRE_DATE                                          DATE
+ ADDRESS                                            VARCHAR2(50)
+ PHONE                                              VARCHAR2(50)
+ JOB_TITLE                                          VARCHAR2(50)
+
+SQL> CREATE OR REPLACE TRIGGER emp_after_insert AFTER insert ON emp
+  2  FOR EACH ROW
+  3  DECLARE
+  4  BEGIN
+  5  insert into emp_backup values(:new.eid, :new.ename, :new.salary, :new.hire_date, :new.address, :new.phone, :new.job_title);
+  6  DBMS_OUTPUT.PUT_LINE('Data inserted successfully');
+  7  END;
+  8  /
+
+Trigger created.
+
+SQL> CREATE OR REPLACE TRIGGER emp_after_update AFTER UPDATE ON emp
+  2  FOR EACH ROW
+  3  DECLARE
+  4  BEGIN
+  5  UPDATE emp_backup
+  6  set eid= :new.eid, ename=:new.ename
+  7  where eid = :old.eid;
+  8  DBMS_OUTPUT.PUT_LINE('Successfully update');
+  9  END;
+ 10  /
+
+Trigger created.
+
+SQL> CREATE OR REPLACE TRIGGER emp_after_delete AFTER DELETE ON emp
+  2  FOR EACH ROW
+  3  DECLARE
+  4  BEGIN
+  5  delete from emp_backup
+  6  where eid= :old.eid;
+  7  DBMS_OUTPUT.PUT_LINE('record Successfully deleted');
+  8  END;
+  9  /
+
+Trigger created.
+
+SQL> insert into emp(eid, ename, salary, hire_date, address, phone, job_title) values(emp_seq.nextval, 'fahima', 5000000, '01-feb-2017', '16/7 moddhopara', '+8801729741217', 'manager');
+insert into emp(eid, ename, salary, hire_date, address, phone, job_title) values(emp_seq.nextval, 'fahima', 5000000, '01-feb-2017', '16/7 moddhopara', '+8801729741217', 'manager')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (HR.EMP_EID_PK) violated 
+
+
+SQL> insert into emp(eid, ename, salary, hire_date, address, phone, job_title) values(120, 'fahima', 5000000, '01-feb-2017', '16/7 moddhopara', '+8801729741217', 'manager');
+
+1 row created.
+
+SQL> insert into emp(eid, ename, salary, hire_date, address, phone, job_title) values(121, 'rima', 7000000, '01-feb-2017', '16/7 moddhopara', '+8801729741217', 'manager');
+
+1 row created.
+
+SQL> insert into emp(eid, ename, salary, hire_date, address, phone, job_title) values(122, 'sima', 7000000, '01-feb-2017', '16/7 moddhopara', '+8801729741217', 'manager');
+
+1 row created.
+
+SQL> select * from emp_backup;
+
+       EID ENAME                                                  SALARY        
+---------- -------------------------------------------------- ----------        
+HIRE_DATE ADDRESS                                                               
+--------- --------------------------------------------------                    
+PHONE                                                                           
+--------------------------------------------------                              
+JOB_TITLE                                                                       
+--------------------------------------------------                              
+       101 Alamen                                                6500000        
+01-JAN-11 110,college road                                                      
+                                                                                
+manager                                                                         
+                                                                                
+
+       EID ENAME                                                  SALARY        
+---------- -------------------------------------------------- ----------        
+HIRE_DATE ADDRESS                                                               
+--------- --------------------------------------------------                    
+PHONE                                                                           
+--------------------------------------------------                              
+JOB_TITLE                                                                       
+--------------------------------------------------                              
+       102 A                                                                    
+          120, polasy lane                                                      
++8801729741217                                                                  
+manager                                                                         
+                                                                                
+
+       EID ENAME                                                  SALARY        
+---------- -------------------------------------------------- ----------        
+HIRE_DATE ADDRESS                                                               
+--------- --------------------------------------------------                    
+PHONE                                                                           
+--------------------------------------------------                              
+JOB_TITLE                                                                       
+--------------------------------------------------                              
+       103 A                                                                    
+          120, polasy lane                                                      
++8801729741237                                                                  
+manager                                                                         
+                                                                                
+
+       EID ENAME                                                  SALARY        
+---------- -------------------------------------------------- ----------        
+HIRE_DATE ADDRESS                                                               
+--------- --------------------------------------------------                    
+PHONE                                                                           
+--------------------------------------------------                              
+JOB_TITLE                                                                       
+--------------------------------------------------                              
+       104 B                                                                    
+          120, polasy lane                                                      
++8801729741937                                                                  
+manager                                                                         
+                                                                                
+
+       EID ENAME                                                  SALARY        
+---------- -------------------------------------------------- ----------        
+HIRE_DATE ADDRESS                                                               
+--------- --------------------------------------------------                    
+PHONE                                                                           
+--------------------------------------------------                              
+JOB_TITLE                                                                       
+--------------------------------------------------                              
+       105 c                                                      500000        
+          120, polasy lane                                                      
++8801729741937                                                                  
+manager                                                                         
+                                                                                
+
+       EID ENAME                                                  SALARY        
+---------- -------------------------------------------------- ----------        
+HIRE_DATE ADDRESS                                                               
+--------- --------------------------------------------------                    
+PHONE                                                                           
+--------------------------------------------------                              
+JOB_TITLE                                                                       
+--------------------------------------------------                              
+       106 c                                                      450000        
+          120, polasy lane                                                      
++8801729741937                                                                  
+manager                                                                         
+                                                                                
+
+       EID ENAME                                                  SALARY        
+---------- -------------------------------------------------- ----------        
+HIRE_DATE ADDRESS                                                               
+--------- --------------------------------------------------                    
+PHONE                                                                           
+--------------------------------------------------                              
+JOB_TITLE                                                                       
+--------------------------------------------------                              
+       107 c                                                      350000        
+          120, polasy lane                                                      
++8801729741937                                                                  
+manager                                                                         
+                                                                                
+
+       EID ENAME                                                  SALARY        
+---------- -------------------------------------------------- ----------        
+HIRE_DATE ADDRESS                                                               
+--------- --------------------------------------------------                    
+PHONE                                                                           
+--------------------------------------------------                              
+JOB_TITLE                                                                       
+--------------------------------------------------                              
+       108 c                                                      650000        
+          120, polasy lane                                                      
++8801729741937                                                                  
+manager                                                                         
+                                                                                
+
+       EID ENAME                                                  SALARY        
+---------- -------------------------------------------------- ----------        
+HIRE_DATE ADDRESS                                                               
+--------- --------------------------------------------------                    
+PHONE                                                                           
+--------------------------------------------------                              
+JOB_TITLE                                                                       
+--------------------------------------------------                              
+       120 fahima                                                5000000        
+01-FEB-17 16/7 moddhopara                                                       
++8801729741217                                                                  
+manager                                                                         
+                                                                                
+
+       EID ENAME                                                  SALARY        
+---------- -------------------------------------------------- ----------        
+HIRE_DATE ADDRESS                                                               
+--------- --------------------------------------------------                    
+PHONE                                                                           
+--------------------------------------------------                              
+JOB_TITLE                                                                       
+--------------------------------------------------                              
+       121 rima                                                  7000000        
+01-FEB-17 16/7 moddhopara                                                       
++8801729741217                                                                  
+manager                                                                         
+                                                                                
+
+       EID ENAME                                                  SALARY        
+---------- -------------------------------------------------- ----------        
+HIRE_DATE ADDRESS                                                               
+--------- --------------------------------------------------                    
+PHONE                                                                           
+--------------------------------------------------                              
+JOB_TITLE                                                                       
+--------------------------------------------------                              
+       122 sima                                                  7000000        
+01-FEB-17 16/7 moddhopara                                                       
++8801729741217                                                                  
+manager                                                                         
+                                                                                
+
+11 rows selected.
+
+SQL> update emp set eid=501 where eid=101;
+
+1 row updated.
+
+SQL> delete from emp where eid=122;
+
+1 row deleted.
+
+SQL> spool off

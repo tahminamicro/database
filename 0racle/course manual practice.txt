@@ -1,0 +1,38 @@
+1. For customer table:
+   DECLARE
+   c_id customer.id%type :=1;
+   c_name customer.name%type;
+   c_mobile customer.mobile%type;
+   c_country customer.country%type;
+   BEGIN
+   SELECT name, mobile, country INTO c_name, c_mobile, c_country
+  FROM customer
+  where id= c_id;
+ dbms_output.put_line('Customer' || c_name || 'from' || c_mobile || c_country);
+ END;
+  /
+
+2. declareing variable:
+
+DECLARE
+ num1 number := 95;
+ num2 number:= 85;
+ BEGIN
+ dbms_output.put_line('Outer Variable num1: ' | | num1);
+dbms_output.put_line('Outer Variable num2: ' | | num2);
+ DECLARE
+ num1 number := 195;
+ num2 number:= 185;
+ BEGIN
+ dbms_output.put_line('Inner Variable num1: ' | | num1);
+dbms_output.put_line('Inner Variable num2: ' | | num2);
+ END;
+END;
+  /
+
+
+
+
+
+
+

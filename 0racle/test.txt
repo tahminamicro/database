@@ -1,0 +1,7 @@
+SQL> jdhfgjh
+SP2-0042: unknown command "jdhfgjh" - rest of line ignored.
+SQL> dghfd
+SP2-0042: unknown command "dghfd" - rest of line ignored.
+SQL> dfkldjgkfd
+SP2-0042: unknown command "dfkldjgkfd" - rest of line ignored.
+SQL> spool off;

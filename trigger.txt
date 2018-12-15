@@ -1,0 +1,183 @@
+SQL> connect sys as sysdba
+Connected.
+SQL> connect hr
+Connected.
+SQL> create table sydney(usaid number(5), fname varchar2(50), lname varchar2(50));
+
+Table created.
+
+SQL> create table sydney_backup as select * from sydney;
+
+Table created.
+
+SQL> CREATE or REPLACE TRIGGER sydney_after_insert AFTER INSERT ON sydney
+  2  FOR EACH ROW
+  3  DECLARE
+  4  BEGIN
+  5  insert into sydney_backup values(:new.usaid, :new.fname, :new.lname);
+  6  DBMS_OUTPUT.PUT_LINE('data inserted successfully on sydney_backup table');
+  7  END;
+  8  /
+
+Trigger created.
+
+SQL> insert into sydney(usaid, fname, lname) values(1, 'Mr.', 'MAmun');
+
+1 row created.
+
+SQL> select * from sydney_backup;
+
+     USAID FNAME                                                                
+---------- --------------------------------------------------                   
+LNAME                                                                           
+--------------------------------------------------                              
+         1 Mr.                                                                  
+MAmun                                                                           
+                                                                                
+
+SQL> commit;
+
+Commit complete.
+
+SQL> CREATE or REPLACE TRIGGER sydney_after_update AFTER UPDATE ON sydney
+  2  FOR EACH ROW
+  3  DECLARE
+  4  BEGIN
+  5  update sydney_backup
+  6  set usaid= :new.usaid
+  7  where usaid = :old.usaid;
+  8  DBMS_OUTPUT.PUT_LINE('Record Successfully updated into sydney_backup table');
+  9  END;
+ 10  /
+
+Trigger created.
+
+SQL> uodate sydney set usaid=101 where usaid=1;
+SP2-0734: unknown command beginning "uodate syd..." - rest of line ignored.
+SQL> update sydney set usaid=101 where usaid=1;
+
+2 rows updated.
+
+SQL> CREATE OR REPLACE TRIGGER sydney_after_update AFTER UPDATE on sydney
+  2  FOR EACH ROW
+  3  DECLARE
+  4  BEGIN
+  5  update sydney_backup
+  6  set usaid= :new.usaid, fname=:new.fname, lname=:new.lname
+  7  where usaid= :old.usaid;
+  8  DBMS_OUTPUT.PUT_LINE('Record successfully updated into sydney_backup file');
+  9  END;
+ 10  /
+
+Trigger created.
+
+SQL> update sydney set fname='miss' where fname='ms';
+
+1 row updated.
+
+SQL> select * from sydney_backup;
+
+     USAID FNAME                                                                
+---------- --------------------------------------------------                   
+LNAME                                                                           
+--------------------------------------------------                              
+       101 Mr.                                                                  
+MAmun                                                                           
+                                                                                
+       101 mr                                                                   
+Alamen                                                                          
+                                                                                
+         2 mr                                                                   
+shuvo                                                                           
+                                                                                
+
+     USAID FNAME                                                                
+---------- --------------------------------------------------                   
+LNAME                                                                           
+--------------------------------------------------                              
+         3 mr                                                                   
+olee                                                                            
+                                                                                
+         3 mr                                                                   
+rony                                                                            
+                                                                                
+         4 mr                                                                   
+motin                                                                           
+                                                                                
+
+     USAID FNAME                                                                
+---------- --------------------------------------------------                   
+LNAME                                                                           
+--------------------------------------------------                              
+         5 mr                                                                   
+Arif                                                                            
+                                                                                
+         6 mr                                                                   
+yeasin                                                                          
+                                                                                
+         7 mr                                                                   
+showkat                                                                         
+                                                                                
+
+     USAID FNAME                                                                
+---------- --------------------------------------------------                   
+LNAME                                                                           
+--------------------------------------------------                              
+         8 mr                                                                   
+shetu                                                                           
+                                                                                
+         9 mr                                                                   
+sagor                                                                           
+                                                                                
+        10 mr                                                                   
+rahmot                                                                          
+                                                                                
+
+     USAID FNAME                                                                
+---------- --------------------------------------------------                   
+LNAME                                                                           
+--------------------------------------------------                              
+        11 miss                                                                 
+sumaiya                                                                         
+                                                                                
+
+13 rows selected.
+
+SQL> CREATE or REPLACE TRIGGER sydney_after_delete AFTER DELETE ON sydney
+  2  FOR EACH ROW
+  3  DECLARE
+  4  BEGIN
+  5  delete from sydney_backup
+  6  where usaid= :old.usaid;
+  7  DBMS_OUTPUT.PUT_LINE('record successfully deleted from sydney_backup table');
+  8  END;
+  9  /
+
+Trigger created.
+
+SQL> delete fname from sydney where fname='Miss';
+delete fname from sydney where fname='Miss'
+             *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended 
+
+
+SQL> delete fname from sydney where fname='miss';
+delete fname from sydney where fname='miss'
+             *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended 
+
+
+SQL> delete fname from sydney where fname='%miss%';
+delete fname from sydney where fname='%miss%'
+             *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended 
+
+
+SQL> delete from sydney where fname='%miss%';
+
+0 rows deleted.
+
+SQL> spool off

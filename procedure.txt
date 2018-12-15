@@ -1,0 +1,136 @@
+SQL> connect hr
+Connected.
+SQL> create table customer(id number(5) primary key, name varchar2(50) not null, mobile varchar2(11) not null, country varchar2(50), Default 'BD');
+create table customer(id number(5) primary key, name varchar2(50) not null, mobile varchar2(11) not null, country varchar2(50), Default 'BD')
+                                                                                                                                *
+
+
+
+SQL> create table customer(id number(5) primary key, name varchar2(50) not null, mobile varchar2(11) not null, country varchar2(50) default 'BD');
+
+Table created.
+
+SQL> CREATE OR REPLACE PROCEDURE insertCustomer( p_id IN customer.id%TYPE, p_name IN customer.name%TYPE, p_mobile IN customer.mobile%TYPE, p_country IN customer.country%TYPE)
+  2  IS
+  3  BEGIN
+  4  INSERT INTO customer(id, name, mobile,country) values(p_id, p_name, p_mobile, p_country);
+  5  COMMIT;
+  6  END;
+  7  /
+
+Procedure created.
+
+
+SQL> BEGIN
+  2  insertCustomer(1,'A', '01671234543','BD');
+  3  END;
+  4  /
+
+PL/SQL procedure successfully completed.
+
+SQL> select * from customer;
+
+        ID NAME                                               MOBILE            
+---------- -------------------------------------------------- -----------       
+COUNTRY                                                                         
+--------------------------------------------------                              
+         1 A                                                  01671234543       
+BD                                                                              
+                                                                                
+
+SQL> BEGIN
+  2  insertCustomer(2, 'B', '018763564', 'BD');
+  3  END;
+  4  /
+
+PL/SQL procedure successfully completed.
+
+SQL> BEGIN
+  2  insertCustomer(3, 'C', '0187637864', 'BD');
+  3  END;
+  4  /
+
+PL/SQL procedure successfully completed.
+
+SQL> CREATE OR REPLACE PROCEDURE updateCustomer(p_id IN customer.id%TYPE, p_name IN customer.name%TYPE,  p_mobile IN customer.mobile%TYPE, p_country IN customer.country%TYPE)
+  2  IS
+  3  BEGIN
+  4  UPDATE CUSTOMER set name=p_name, mobile=p_mobile, country=p_country
+  5  where id=p_id;
+  6  COMMIT;
+  7  END;
+  8  /
+
+Procedure created.
+
+SQL> BEGIN
+  2  updateCustomer(1, 'AMIN', '01721324232', 'BD');
+  3  END;
+  4  /
+
+PL/SQL procedure successfully completed.
+
+SQL> CREATE OR REPLACE PROCEDURE deleteCustomer(p_id IN customer.id%TYPE, p_name IN customer.name%TYPE, p_mobile IN customer.mobile%type, p_country IN customer.country%TYPE)
+  2  IS
+  3  BEGIN
+  4  DELETE FROM customer
+  5  where id=p_id;
+  6  COMMIT;
+  7  END;
+  8  /
+
+Procedure created.
+
+
+
+SQL> BEGIN
+  2  deleteCustomer(3,'C','0187637864', 'BD');
+  3  END;
+  4  /
+
+PL/SQL procedure successfully completed.
+
+SQL> BEGIN
+  2  updateCustomer(3, 'chaity', '01729741217', 'BD');
+  3  END;
+  4  /
+
+PL/SQL procedure successfully completed.
+
+SQL> select * from customer;
+
+        ID NAME                                               MOBILE            
+---------- -------------------------------------------------- -----------       
+COUNTRY                                                                         
+--------------------------------------------------                              
+         1 AMIN                                               01721324232       
+BD                                                                              
+                                                                                
+         2 B                                                  018763564         
+BD                                                                              
+                                                                                
+
+SQL> BEGIN
+  2  insertCustomer(3, 'chaity', '01729741217', 'BD');
+  3  END;
+  4  /
+
+PL/SQL procedure successfully completed.
+
+SQL> Select * from customer;
+
+        ID NAME                                               MOBILE            
+---------- -------------------------------------------------- -----------       
+COUNTRY                                                                         
+--------------------------------------------------                              
+         1 AMIN                                               01721324232       
+BD                                                                              
+                                                                                
+         2 B                                                  018763564         
+BD                                                                              
+                                                                                
+         3 chaity                                             01729741217       
+BD                                                                              
+                                                                                
+
+SQL> spool off

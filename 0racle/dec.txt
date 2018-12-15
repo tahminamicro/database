@@ -1,0 +1,722 @@
+SQL> connect
+Enter user-name: hr
+Connected.
+SQL> select * from dhaka;
+
+        ID                                                                      
+----------                                                                      
+NAME                                                                            
+--------------------------------------------------------------------------------
+MOBILE          EMAIL                                                  INCOME   
+--------------- -------------------------------------------------- ----------   
+REGI_DATE COUNTRY                                                               
+--------- --------------------------------------------------                    
+         4                                                                      
+D                                                                               
++8801731234536  dina@gmail.com                                          70000   
+05-DEC-18 Bangladesh                                                            
+                                                                                
+
+        ID                                                                      
+----------                                                                      
+NAME                                                                            
+--------------------------------------------------------------------------------
+MOBILE          EMAIL                                                  INCOME   
+--------------- -------------------------------------------------- ----------   
+REGI_DATE COUNTRY                                                               
+--------- --------------------------------------------------                    
+         1                                                                      
+A                                                                               
++8801729741217  ani@gmail.com                                            5000   
+05-DEC-18 Bangladesh                                                            
+                                                                                
+
+        ID                                                                      
+----------                                                                      
+NAME                                                                            
+--------------------------------------------------------------------------------
+MOBILE          EMAIL                                                  INCOME   
+--------------- -------------------------------------------------- ----------   
+REGI_DATE COUNTRY                                                               
+--------- --------------------------------------------------                    
+         2                                                                      
+A                                                                               
++8801729741217  beni@gmail.com                                          50000   
+05-DEC-18 Bangladesh                                                            
+                                                                                
+
+        ID                                                                      
+----------                                                                      
+NAME                                                                            
+--------------------------------------------------------------------------------
+MOBILE          EMAIL                                                  INCOME   
+--------------- -------------------------------------------------- ----------   
+REGI_DATE COUNTRY                                                               
+--------- --------------------------------------------------                    
+         3                                                                      
+c                                                                               
++8801721280498  chini@gmail.com                                         60000   
+05-DEC-18 Bangladesh                                                            
+                                                                                
+
+SQL> create view dha_view1 as select id, name, email from dhaka;
+
+View created.
+
+SQL> desc dha_view1;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ ID                                        NOT NULL NUMBER(15)
+ NAME                                      NOT NULL VARCHAR2(100)
+ EMAIL                                              VARCHAR2(50)
+
+SQL> slect * from dha_view1;
+SP2-0734: unknown command beginning "slect * fr..." - rest of line ignored.
+SQL> select * from dha_view1;
+
+        ID                                                                      
+----------                                                                      
+NAME                                                                            
+--------------------------------------------------------------------------------
+EMAIL                                                                           
+--------------------------------------------------                              
+         4                                                                      
+D                                                                               
+dina@gmail.com                                                                  
+                                                                                
+         1                                                                      
+A                                                                               
+ani@gmail.com                                                                   
+
+        ID                                                                      
+----------                                                                      
+NAME                                                                            
+--------------------------------------------------------------------------------
+EMAIL                                                                           
+--------------------------------------------------                              
+                                                                                
+         2                                                                      
+A                                                                               
+beni@gmail.com                                                                  
+                                                                                
+         3                                                                      
+c                                                                               
+
+        ID                                                                      
+----------                                                                      
+NAME                                                                            
+--------------------------------------------------------------------------------
+EMAIL                                                                           
+--------------------------------------------------                              
+chini@gmail.com                                                                 
+                                                                                
+
+SQL> select * from dhaka where id=3;
+
+        ID                                                                      
+----------                                                                      
+NAME                                                                            
+--------------------------------------------------------------------------------
+MOBILE          EMAIL                                                  INCOME   
+--------------- -------------------------------------------------- ----------   
+REGI_DATE COUNTRY                                                               
+--------- --------------------------------------------------                    
+         3                                                                      
+c                                                                               
++8801721280498  chini@gmail.com                                         60000   
+05-DEC-18 Bangladesh                                                            
+                                                                                
+
+SQL> create view dha_view2 as select * from dhaka where id=3;
+
+View created.
+
+SQL> select * dha_view2;
+select * dha_view2
+         *
+ERROR at line 1:
+ORA-00923: FROM keyword not found where expected 
+
+
+SQL> select * from dha_view2;
+
+        ID                                                                      
+----------                                                                      
+NAME                                                                            
+--------------------------------------------------------------------------------
+MOBILE          EMAIL                                                  INCOME   
+--------------- -------------------------------------------------- ----------   
+REGI_DATE COUNTRY                                                               
+--------- --------------------------------------------------                    
+         3                                                                      
+c                                                                               
++8801721280498  chini@gmail.com                                         60000   
+05-DEC-18 Bangladesh                                                            
+                                                                                
+
+SQL> select count(*) as "No of Data" from dhaka;
+
+No of Data                                                                      
+----------                                                                      
+         4                                                                      
+
+SQL> select sum(income) as "Total Income" from dhaka;
+
+Total Income                                                                    
+------------                                                                    
+      185000                                                                    
+
+SQL> create view dha_view3 as  select sum(income) as "Total Income" from dhaka;
+
+View created.
+
+SQL> create or replace view empvu80(id_number, name, sal, department_id) as select employee_id, first_name || '' ||last_name, salary, department_id from employees where department_id=80;
+
+View created.
+
+SQL> desc empvu80;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ ID_NUMBER                                 NOT NULL NUMBER(6)
+ NAME                                               VARCHAR2(45)
+ SAL                                                NUMBER(8,2)
+ DEPARTMENT_ID                                      NUMBER(4)
+
+SQL> select * from empvu80;
+
+ ID_NUMBER NAME                                                 SAL             
+---------- --------------------------------------------- ----------             
+DEPARTMENT_ID                                                                   
+-------------                                                                   
+       145 JohnRussell                                        14000             
+           80                                                                   
+                                                                                
+       146 KarenPartners                                      13500             
+           80                                                                   
+                                                                                
+       147 AlbertoErrazuriz                                   12000             
+           80                                                                   
+                                                                                
+
+ ID_NUMBER NAME                                                 SAL             
+---------- --------------------------------------------- ----------             
+DEPARTMENT_ID                                                                   
+-------------                                                                   
+       148 GeraldCambrault                                    11000             
+           80                                                                   
+                                                                                
+       149 EleniZlotkey                                       10500             
+           80                                                                   
+                                                                                
+       150 PeterTucker                                        10000             
+           80                                                                   
+                                                                                
+
+ ID_NUMBER NAME                                                 SAL             
+---------- --------------------------------------------- ----------             
+DEPARTMENT_ID                                                                   
+-------------                                                                   
+       151 DavidBernstein                                      9500             
+           80                                                                   
+                                                                                
+       152 PeterHall                                           9000             
+           80                                                                   
+                                                                                
+       153 ChristopherOlsen                                    8000             
+           80                                                                   
+                                                                                
+
+ ID_NUMBER NAME                                                 SAL             
+---------- --------------------------------------------- ----------             
+DEPARTMENT_ID                                                                   
+-------------                                                                   
+       154 NanetteCambrault                                    7500             
+           80                                                                   
+                                                                                
+       155 OliverTuvault                                       7000             
+           80                                                                   
+                                                                                
+       156 JanetteKing                                        10000             
+           80                                                                   
+                                                                                
+
+ ID_NUMBER NAME                                                 SAL             
+---------- --------------------------------------------- ----------             
+DEPARTMENT_ID                                                                   
+-------------                                                                   
+       157 PatrickSully                                        9500             
+           80                                                                   
+                                                                                
+       158 AllanMcEwen                                         9000             
+           80                                                                   
+                                                                                
+       159 LindseySmith                                        8000             
+           80                                                                   
+                                                                                
+
+ ID_NUMBER NAME                                                 SAL             
+---------- --------------------------------------------- ----------             
+DEPARTMENT_ID                                                                   
+-------------                                                                   
+       160 LouiseDoran                                         7500             
+           80                                                                   
+                                                                                
+       161 SarathSewall                                        7000             
+           80                                                                   
+                                                                                
+       162 ClaraVishney                                       10500             
+           80                                                                   
+                                                                                
+
+ ID_NUMBER NAME                                                 SAL             
+---------- --------------------------------------------- ----------             
+DEPARTMENT_ID                                                                   
+-------------                                                                   
+       163 DanielleGreene                                      9500             
+           80                                                                   
+                                                                                
+       164 MatteaMarvins                                       7200             
+           80                                                                   
+                                                                                
+       165 DavidLee                                            6800             
+           80                                                                   
+                                                                                
+
+ ID_NUMBER NAME                                                 SAL             
+---------- --------------------------------------------- ----------             
+DEPARTMENT_ID                                                                   
+-------------                                                                   
+       166 SundarAnde                                          6400             
+           80                                                                   
+                                                                                
+       167 AmitBanda                                           6200             
+           80                                                                   
+                                                                                
+       168 LisaOzer                                           11500             
+           80                                                                   
+                                                                                
+
+ ID_NUMBER NAME                                                 SAL             
+---------- --------------------------------------------- ----------             
+DEPARTMENT_ID                                                                   
+-------------                                                                   
+       169 HarrisonBloom                                      10000             
+           80                                                                   
+                                                                                
+       170 TaylerFox                                           9600             
+           80                                                                   
+                                                                                
+       171 WilliamSmith                                        7400             
+           80                                                                   
+                                                                                
+
+ ID_NUMBER NAME                                                 SAL             
+---------- --------------------------------------------- ----------             
+DEPARTMENT_ID                                                                   
+-------------                                                                   
+       172 ElizabethBates                                      7300             
+           80                                                                   
+                                                                                
+       173 SunditaKumar                                        6100             
+           80                                                                   
+                                                                                
+       174 EllenAbel                                          11000             
+           80                                                                   
+                                                                                
+
+ ID_NUMBER NAME                                                 SAL             
+---------- --------------------------------------------- ----------             
+DEPARTMENT_ID                                                                   
+-------------                                                                   
+       175 AlyssaHutton                                        8800             
+           80                                                                   
+                                                                                
+       176 JonathonTaylor                                      8600             
+           80                                                                   
+                                                                                
+       177 JackLivingston                                      8400             
+           80                                                                   
+                                                                                
+
+ ID_NUMBER NAME                                                 SAL             
+---------- --------------------------------------------- ----------             
+DEPARTMENT_ID                                                                   
+-------------                                                                   
+       179 CharlesJohnson                                      6200             
+           80                                                                   
+                                                                                
+
+34 rows selected.
+
+SQL> create or replace view dept_sum_vu(name, minsal, maxsal, avgsal) as select d.department_name, MIN(e.salary), max(e.salary), AVG(e.salary) from employees e join epartment d on (e.department_id=d.department_id) group by d.department_name;
+create or replace view dept_sum_vu(name, minsal, maxsal, avgsal) as select d.department_name, MIN(e.salary), max(e.salary), AVG(e.salary) from employees e join epartment d on (e.department_id=d.department_id) group by d.department_name
+                                                                                                                                                                *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> create or replace view dept_sum_vu(name, minsal, maxsal, avgsal) as select d.department_name, MIN(e.salary), max(e.salary), AVG(e.salary) from employees e join d epartment d on (e.department_id=d.department_id) group by d.department_name;
+create or replace view dept_sum_vu(name, minsal, maxsal, avgsal) as select d.department_name, MIN(e.salary), max(e.salary), AVG(e.salary) from employees e join d epartment d on (e.department_id=d.department_id) group by d.department_name
+                                                                                                                                                                            *
+ERROR at line 1:
+ORA-00905: missing keyword 
+
+
+SQL>  create or replace view dept_sum_vu(name, minsal, maxsal, avgsal) as select d.department_name, MIN(e.salary), MAX(e.salary), AVG(e.salary) from employees e join d epartment d on (e.department_id=d.department_id) group by d.department_name;
+ create or replace view dept_sum_vu(name, minsal, maxsal, avgsal) as select d.department_name, MIN(e.salary), MAX(e.salary), AVG(e.salary) from employees e join d epartment d on (e.department_id=d.department_id) group by d.department_name
+                                                                                                                                                                             *
+ERROR at line 1:
+ORA-00905: missing keyword 
+
+
+SQL> create or replace view dept_sum_vu(name, minsal, maxsal, avgsal) as select d.department_name, MIN(e.salary), MAX(e.salary), AVG(e.salary) from employees e join d epartments d on (e.department_id=d.department_id) group by d.department_name;
+create or replace view dept_sum_vu(name, minsal, maxsal, avgsal) as select d.department_name, MIN(e.salary), MAX(e.salary), AVG(e.salary) from employees e join d epartments d on (e.department_id=d.department_id) group by d.department_name
+                                                                                                                                                                             *
+ERROR at line 1:
+ORA-00905: missing keyword 
+
+
+SQL>  create or replace view dept_sum_vu(name, minsal, maxsal, avgsal) as select d.department_name, MIN(e.salary), MAX(e.salary), AVG(e.salary) from employees e join departments d on (e.department_id=d.department_id) group by d.department_name;
+
+View created.
+
+SQL> desc dept_sum_vu;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ NAME                                      NOT NULL VARCHAR2(30)
+ MINSAL                                             NUMBER
+ MAXSAL                                             NUMBER
+ AVGSAL                                             NUMBER
+
+SQL> select * from dept_sum_vu;
+
+NAME                               MINSAL     MAXSAL     AVGSAL                 
+------------------------------ ---------- ---------- ----------                 
+Administration                       4400       4400       4400                 
+Accounting                           8300      12008      10154                 
+Purchasing                           2500      11000       4150                 
+Human Resources                      6500       6500       6500                 
+IT                                   4200       9000       5760                 
+Public Relations                    10000      10000      10000                 
+Executive                           17000      24000 19333.3333                 
+Shipping                             2100       8200 3475.55556                 
+Sales                                6100      14000 8955.88235                 
+Finance                              6900      12008 8601.33333                 
+Marketing                            6000      13000       9500                 
+
+11 rows selected.
+
+SQL> select view_name from user_views;
+
+VIEW_NAME                                                                       
+------------------------------                                                  
+DEPT_SUM_VU                                                                     
+DHA_VIEW1                                                                       
+DHA_VIEW2                                                                       
+DHA_VIEW3                                                                       
+EMPVU80                                                                         
+EMP_DETAILS_VIEW                                                                
+
+6 rows selected.
+
+SQL> create sequence dha_seq increment by 5 start with 500 max value 8000 nocache nocycle;
+create sequence dha_seq increment by 5 start with 500 max value 8000 nocache nocycle
+                                                      *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended 
+
+
+SQL> create sequence dha_seq increment by 5 start with 500 maxvalue 8000 nocache nocycle;
+
+Sequence created.
+
+SQL> delete from dhaka;
+
+4 rows deleted.
+
+SQL> insert into dhaka(id, name, mobile, email, income) values(dept_seq.nextval, 'AAA', '+8801721280493', 'b@gmail.com', 7000);
+insert into dhaka(id, name, mobile, email, income) values(dept_seq.nextval, 'AAA', '+8801721280493', 'b@gmail.com', 7000)
+                                                          *
+ERROR at line 1:
+ORA-02289: sequence does not exist 
+
+
+SQL> insert into dhaka(id, name, mobile, email, income) values(dept_seq.nextval, 'AAA', '+8801721280493', 'b@gmail.com', 20000);
+insert into dhaka(id, name, mobile, email, income) values(dept_seq.nextval, 'AAA', '+8801721280493', 'b@gmail.com', 20000)
+                                                          *
+ERROR at line 1:
+ORA-02289: sequence does not exist 
+
+
+SQL>  insert into dhaka(id, name, mobile, email, income) values(dha_seq.nextval, 'AAA', '+8801721280493', 'b@gmail.com', 20000);
+
+1 row created.
+
+SQL>  insert into dhaka(id, name, mobile, email, income) values(dha_seq.nextval, 'AB', '+8801721280483', 'bc@gmail.com', 25000);
+
+1 row created.
+
+SQL> create table usa (id number(8) primary key, name varchar2(55));
+
+Table created.
+
+SQL> insert into usa(id, name) values(dha_seq.currval, 'ok');
+
+1 row created.
+
+SQL> select * from usa;
+
+        ID NAME                                                                 
+---------- -------------------------------------------------------              
+       505 ok                                                                   
+
+SQL>  insert into usa(id, name) values(dha_seq.nextval, 'good');
+
+1 row created.
+
+SQL> select * from usa;
+
+        ID NAME                                                                 
+---------- -------------------------------------------------------              
+       505 ok                                                                   
+       510 good                                                                 
+
+SQL> select index_name from user_indexes;
+
+INDEX_NAME                                                                      
+------------------------------                                                  
+REG_ID_PK                                                                       
+COUNTRY_C_ID_PK                                                                 
+LOC_ID_PK                                                                       
+DEPT_ID_PK                                                                      
+JOB_ID_PK                                                                       
+EMP_EMAIL_UK                                                                    
+EMP_EMP_ID_PK                                                                   
+JHIST_EMP_ID_ST_DATE_PK                                                         
+EMP_DEPARTMENT_IX                                                               
+EMP_JOB_IX                                                                      
+EMP_MANAGER_IX                                                                  
+
+INDEX_NAME                                                                      
+------------------------------                                                  
+EMP_NAME_IX                                                                     
+DEPT_LOCATION_IX                                                                
+JHIST_JOB_IX                                                                    
+JHIST_EMPLOYEE_IX                                                               
+JHIST_DEPARTMENT_IX                                                             
+LOC_CITY_IX                                                                     
+LOC_STATE_PROVINCE_IX                                                           
+LOC_COUNTRY_IX                                                                  
+SYS_C007039                                                                     
+SYS_C007034                                                                     
+SYS_C007035                                                                     
+
+INDEX_NAME                                                                      
+------------------------------                                                  
+SYS_C007037                                                                     
+SYS_C007038                                                                     
+
+24 rows selected.
+
+SQL> create index emp_last_name_idx on employees(last_name);
+
+Index created.
+
+SQL> select index emp_last_name_idx form user_indexes;
+select index emp_last_name_idx form user_indexes
+       *
+ERROR at line 1:
+ORA-00936: missing expression 
+
+
+SQL> select index_emp_last_name_idx from user_indexes;
+select index_emp_last_name_idx from user_indexes
+       *
+ERROR at line 1:
+ORA-00904: "INDEX_EMP_LAST_NAME_IDX": invalid identifier 
+
+
+SQL> select index_name from user_indexes;
+
+INDEX_NAME                                                                      
+------------------------------                                                  
+REG_ID_PK                                                                       
+COUNTRY_C_ID_PK                                                                 
+LOC_ID_PK                                                                       
+DEPT_ID_PK                                                                      
+JOB_ID_PK                                                                       
+EMP_EMAIL_UK                                                                    
+EMP_EMP_ID_PK                                                                   
+JHIST_EMP_ID_ST_DATE_PK                                                         
+EMP_DEPARTMENT_IX                                                               
+EMP_JOB_IX                                                                      
+EMP_MANAGER_IX                                                                  
+
+INDEX_NAME                                                                      
+------------------------------                                                  
+EMP_NAME_IX                                                                     
+DEPT_LOCATION_IX                                                                
+JHIST_JOB_IX                                                                    
+JHIST_EMPLOYEE_IX                                                               
+JHIST_DEPARTMENT_IX                                                             
+LOC_CITY_IX                                                                     
+LOC_STATE_PROVINCE_IX                                                           
+LOC_COUNTRY_IX                                                                  
+SYS_C007039                                                                     
+EMP_LAST_NAME_IDX                                                               
+SYS_C007034                                                                     
+
+INDEX_NAME                                                                      
+------------------------------                                                  
+SYS_C007035                                                                     
+SYS_C007037                                                                     
+SYS_C007038                                                                     
+
+25 rows selected.
+
+SQL> select * from dhaka;
+
+        ID                                                                      
+----------                                                                      
+NAME                                                                            
+--------------------------------------------------------------------------------
+MOBILE          EMAIL                                                  INCOME   
+--------------- -------------------------------------------------- ----------   
+REGI_DATE COUNTRY                                                               
+--------- --------------------------------------------------                    
+       500                                                                      
+AAA                                                                             
++8801721280493  b@gmail.com                                             20000   
+06-DEC-18 Bangladesh                                                            
+                                                                                
+
+        ID                                                                      
+----------                                                                      
+NAME                                                                            
+--------------------------------------------------------------------------------
+MOBILE          EMAIL                                                  INCOME   
+--------------- -------------------------------------------------- ----------   
+REGI_DATE COUNTRY                                                               
+--------- --------------------------------------------------                    
+       505                                                                      
+AB                                                                              
++8801721280483  bc@gmail.com                                            25000   
+06-DEC-18 Bangladesh                                                            
+                                                                                
+
+SQL> create synonym d for dhaka;
+
+Synonym created.
+
+SQL> select * from d;
+
+        ID                                                                      
+----------                                                                      
+NAME                                                                            
+--------------------------------------------------------------------------------
+MOBILE          EMAIL                                                  INCOME   
+--------------- -------------------------------------------------- ----------   
+REGI_DATE COUNTRY                                                               
+--------- --------------------------------------------------                    
+       500                                                                      
+AAA                                                                             
++8801721280493  b@gmail.com                                             20000   
+06-DEC-18 Bangladesh                                                            
+                                                                                
+
+        ID                                                                      
+----------                                                                      
+NAME                                                                            
+--------------------------------------------------------------------------------
+MOBILE          EMAIL                                                  INCOME   
+--------------- -------------------------------------------------- ----------   
+REGI_DATE COUNTRY                                                               
+--------- --------------------------------------------------                    
+       505                                                                      
+AB                                                                              
++8801721280483  bc@gmail.com                                            25000   
+06-DEC-18 Bangladesh                                                            
+                                                                                
+
+SQL> select synonym_name from user_synonyms;
+
+SYNONYM_NAME                                                                    
+------------------------------                                                  
+D                                                                               
+
+SQL> Altar table customers add customer_age varchar2(50);
+SP2-0734: unknown command beginning "Altar tabl..." - rest of line ignored.
+SQL>  Alter table customers add customer_age varchar2(50);
+ Alter table customers add customer_age varchar2(50)
+*
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> create table customers(customer_id number(2) primary key, customer_name varchar2(50));
+
+Table created.
+
+SQL> alter table customers add customer_age varchar2(50);
+
+Table altered.
+
+SQL> alter table  customers add (customer_type varchar2(50), customer_address varchar2(50));
+
+Table altered.
+
+SQL> alter table customers add city varchar2(50);
+
+Table altered.
+
+SQL> alter table customers modify customer_name varchar2(100) not null;
+
+Table altered.
+
+SQL> alter table customers modify (customer_name  varchar2(100) not null, city varchar2(100));
+alter table customers modify (customer_name  varchar2(100) not null, city varchar2(100))
+                              *
+ERROR at line 1:
+ORA-01442: column to be modified to NOT NULL is already NOT NULL 
+
+
+SQL> alter table customers rename column customer_name to cname;
+
+Table altered.
+
+SQL> select * from customers;
+
+no rows selected
+
+SQL> desc customers;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ CUSTOMER_ID                               NOT NULL NUMBER(2)
+ CNAME                                     NOT NULL VARCHAR2(100)
+ CUSTOMER_AGE                                       VARCHAR2(50)
+ CUSTOMER_TYPE                                      VARCHAR2(50)
+ CUSTOMER_ADDRESS                                   VARCHAR2(50)
+ CITY                                               VARCHAR2(50)
+
+SQL> insert into customers(customer_id, cname, customer_age, customer_type, Customer_address, city) values(1, 'tauhid', '25', 'regular', '110, taiwan', 'type');
+
+1 row created.
+
+SQL> insert into customers(customer_id, cname, customer_age, customer_type, Customer_address, city) values(1, 'sumaiya', '25', 'iregular', '110, Mirpur', 'Dhaka');
+insert into customers(customer_id, cname, customer_age, customer_type, Customer_address, city) values(1, 'sumaiya', '25', 'iregular', '110, Mirpur', 'Dhaka')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (HR.SYS_C007040) violated 
+
+
+SQL> insert into customers(customer_id, cname, customer_age, customer_type, Customer_address, city) values(2, 'sumaiya', '25', 'iregular', '110, Mirpur', 'Dhaka');
+
+1 row created.
+
+SQL> commit
+  2  
+SQL> commit;
+
+Commit complete.
+
+SQL> spool off;
